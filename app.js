@@ -1,59 +1,89 @@
-// Include api for currency change
-const api = "https://api.exchangerate-api.com/v4/latest/";
+const BASE_URL = "https://api.exchangerate.host/latest";
 
-// For selecting different controls
-let search = document.querySelector(".searchBox");
-let convert = document.querySelector(".convert");
-let fromCurrecy = document.querySelector(".from");
-let toCurrecy = document.querySelector(".to");
-let finalValue = document.querySelector(".finalValue");
-let finalAmount = document.getElementById("finalAmount");
-let resultFrom;
-let resultTo;
-let searchValue;
+const dropdowns = document.querySelectorAll(".dropdown select");
+const btn = document.querySelector("form button");
+const fromCurr = document.querySelector(".from select");
+const toCurr = document.querySelector(".to select");
+const msg = document.querySelector(".msg");
 
-// Event when currency is changed
-fromCurrecy.addEventListener("change", (event) => {
-  resultFrom = `${event.target.value}`;
+for (let select of dropdowns) {
+  for (currCode in countryList) {
+    let newOption = document.createElement("option");
+    newOption.innerText = currCode;
+    newOption.value = currCode;
+    if (select.name === "from" && currCode === "USD") {
+      newOption.selected = "selected";
+    } else if (select.name === "to" && currCode === "INR") {
+      newOption.selected = "selected";
+    }
+    select.append(newOption);
+  }
+
+  select.addEventListener("change", (evt) => {
+    updateFlag(evt.target);
+  });
+}
+
+const updateExchangeRate = async () => {
+  console.log("fromCurr", fromCurr);
+  console.log("toCurr", toCurr);
+  let amount = document.querySelector(".amount input");
+  let amtVal = amount.value;
+  if (amtVal === "" || amtVal < 1) {
+    amtVal = 1;
+    amount.value = "1";
+  }
+  // const URL = `${BASE_URL}/${fromCurr.value.toLowerCase()}/${toCurr.value.toLowerCase()}.json`;
+
+  // const result = "https://api.exchangerate.host/latest?base=USD&symbols=EUR";
+
+  // console.log("result ", result);
+  // let response = await fetch(URL);
+  // let data = await response.json();
+  // console.log(data);
+  // let rate = data[toCurr.value.toLowerCase()];
+
+  const result = "https://api.exchangerate-api.com/v4/latest/INR";
+
+  console.log("Result URL:", result);
+
+  try {
+    // Use result as the URL
+    let response = await fetch(result);
+
+    // Parse the response
+    let data = await response.json();
+    console.log("API Data:", data);
+
+    // Assuming toCurr is an input field or a variable holding currency code like 'EUR'
+    let toCurr = { value: "EUR" }; // Mocking toCurr for now
+    let rate = data.rates[toCurr.value.toUpperCase()]; // Access the rate using toCurr value
+
+    console.log(
+      `Exchange rate for USD to ${toCurr.value.toUpperCase()}:`,
+      rate
+    );
+  } catch (error) {
+    console.error("Error fetching exchange rates:", error);
+  }
+
+  let finalAmount = amtVal * rate;
+  msg.innerText = `${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`;
+};
+
+const updateFlag = (element) => {
+  let currCode = element.value;
+  let countryCode = countryList[currCode];
+  let newSrc = `https://flagsapi.com/${countryCode}/flat/64.png`;
+  let img = element.parentElement.querySelector("img");
+  img.src = newSrc;
+};
+
+btn.addEventListener("click", (evt) => {
+  evt.preventDefault();
+  updateExchangeRate();
 });
 
-// Event when currency is changed
-toCurrecy.addEventListener("change", (event) => {
-  resultTo = `${event.target.value}`;
+window.addEventListener("load", () => {
+  updateExchangeRate();
 });
-
-search.addEventListener("input", updateValue);
-
-// Function for updating value
-function updateValue(e) {
-  searchValue = e.target.value;
-}
-
-// When user clicks, it calls function getresults
-convert.addEventListener("click", getResults);
-
-// Function getresults
-function getResults() {
-  alert();
-  fetch(`${api + fromCurrecy.value}`)
-    .then((currency) => {
-      return currency.json();
-    })
-    .then(displayResults);
-}
-
-// Display results after conversion
-function displayResults(currency) {
-  let fromRate = currency.rates[resultFrom];
-  console.log("fromss" + fromRate);
-  let toRate = currency.rates[resultTo];
-  console.log("toRate", toRate);
-  finalValue.innerHTML = ((toRate / fromRate) * searchValue).toFixed(2);
-  finalAmount.style.display = "block";
-}
-
-// When user click on reset button
-function clearVal() {
-  window.location.reload();
-  document.getElementsByClassName("finalValue").innerHTML = "";
-}
