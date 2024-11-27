@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #654520;
+    /* font-size: xx-large; */
+  }
+  
+  .container {
+    text-align: center;
+    width: 100%;
+    /* font-size: large; */
+    max-width: 800px;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    font-size: 280%;
+    color: #E6D9A2;
+  }
+  
+  .input-section {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    
+  }
+  
+  input {
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    border:none;
+    border-radius: 2cap;
+    background-color: #E6D9A2;
+    color: #654520;
+    
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #E6D9A2;
+    color:#654520;
+    border: none;
+    cursor: pointer;
+    border-radius: 2cap;
+  }
+  
+  button:hover {
+    background-color: #FFD09B;
+    color: #654520;
+
+  }
+  
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    
+  }
+  
+  .name-tag {
+    width: 150px;
+    height: 90px;
+    background: linear-gradient(to bottom,#FFEEAD, #FFD09B);
+    color: #654520;
+    border-radius: 5px;
+    position: relative;
+    text-align: left;
+    padding: 10px;
+  }
+  
+  .name-tag strong {
+    font-size: 20px;
+  }
+  
+  .name-tag h2 {
+    margin-top: 10px;
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  .icons {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    /* height: 50px;
+    width: 0px; */
+    /* background-color: #654520; */
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .icons img {
+    cursor: pointer;
+    /* color: #efc3e6; */
+    /* font-size: 14px; */
+    background-color: #654520;
+    padding: 6px;
+    width:15px;
+    height: 15px;
+  
+    border-radius: 25%;
+  }
+  
+  .icons img:hover {
+    background-color:#825B32;
+  }
+  
